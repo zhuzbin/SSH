@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Set;
@@ -45,8 +46,10 @@ public class IndexController {
 
     @RequestMapping("/imageCode")
     @ResponseBody
-    public void ImageCode(HttpServletResponse response) throws Exception{
+    public void ImageCode(HttpServletRequest request, HttpServletResponse response) throws Exception{
         ValidateCode vCode = new ValidateCode(100,30,4,100);
+        request.getSession().removeAttribute("validateCode");
+        request.getSession().setAttribute("validateCode",ValidateCode.getCode());
         vCode.write(response.getOutputStream());
     }
 

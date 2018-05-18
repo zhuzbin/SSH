@@ -16,10 +16,18 @@ import javax.servlet.http.HttpSession;
 public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
+
         HttpServletRequest httpServletRequest = (HttpServletRequest)request;
         HttpSession session = httpServletRequest.getSession();
         //页面输入的验证码
+        Object randomCode = request.getParameter("randomcode");
+        //从session中获取验证码
+        Object validateCode = session.getAttribute("validateCode");
 
+        if(randomCode!=null&&validateCode!=null&&!randomCode.toString().equalsIgnoreCase(validateCode.toString())){
+            request.setAttribute("shiroLoginFailure","randomCodeError");
+            return true;
+        }
         return super.onAccessDenied(request, response, mappedValue);
     }
 }

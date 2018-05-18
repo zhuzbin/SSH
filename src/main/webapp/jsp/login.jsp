@@ -30,7 +30,7 @@
             </div>
             <div class="login_margin">
                 <label>
-                    <input type="password" name="passwordsss"  class="txt_inputCode" value="">
+                    <input type="text" name="randomcode"  class="txt_inputCode" value="">
                 </label>
                 <img src="${pageContext.request.contextPath}/imageCode">
             </div>

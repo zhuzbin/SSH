@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class LoginController {
 
-    @RequestMapping(value = "/login"    )
+    @RequestMapping(value = "/login")
     public String showLoginForm(HttpServletRequest req, Model model) {
         String exceptionClassName = (String)req.getAttribute("shiroLoginFailure");
         String error = null;
@@ -24,6 +24,8 @@ public class LoginController {
             error = "用户名/密码错误";
         } else if(IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
             error = "用户名/密码错误";
+        } else if("randomCodeError".equals(exceptionClassName)){
+            error = "验证码错误";
         } else if(exceptionClassName != null) {
             error = "其他错误：" + exceptionClassName;
         }

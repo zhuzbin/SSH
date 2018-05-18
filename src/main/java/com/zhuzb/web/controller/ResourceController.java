@@ -1,16 +1,17 @@
 package com.zhuzb.web.controller;
 
+import com.zhuzb.entity.Country;
 import com.zhuzb.entity.Resource;
 import com.zhuzb.service.ResourceService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>User: Zhang Kaitao
@@ -32,8 +33,8 @@ public class ResourceController {
     @RequiresPermissions("resource:view")
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
-        model.addAttribute("resourceList", resourceService.findAll());
-        return "resource/list";
+        //model.addAttribute("resourceList", resourceService.findAll());
+        return "resource/resourceList";
     }
 
     @RequiresPermissions("resource:create")
@@ -82,5 +83,10 @@ public class ResourceController {
         return "redirect:/resource";
     }
 
-
+    @RequestMapping("/resourceList")
+    @ResponseBody
+    public List<Resource> resourceList(HttpServletRequest request, Country country){
+        List<Resource> a = resourceService.findAll();
+        return a;
+    }
 }
