@@ -12,5 +12,7 @@
         <property name="locked" column="locked"></property>
         <property name="organizationId" column="organization_id"></property>
         <property name="roleIds" column="role_ids"></property>
+        <property name="createTime" column="create_time"></property>
+        <property name="updateTime" column="update_time"></property>
     </class>
 </hibernate-mapping>

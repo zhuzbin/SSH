@@ -52,11 +52,6 @@
                 {
                     title: '权限字符串',
                     field: 'permission'
-                },
-                {
-                    title:'操作',
-                    filed:'',
-                    formatter:operation
                 }
             ]
         });

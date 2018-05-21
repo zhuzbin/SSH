@@ -1,5 +1,6 @@
 package com.zhuzb.entity;
 
+import com.zhuzb.common.BaseEntity;
 import com.zhuzb.util.StringUtil;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -14,7 +15,7 @@ import java.util.List;
  * <p>Date: 14-1-28
  * <p>Version: 1.0
  */
-public class User implements Serializable {
+public class User extends BaseEntity implements Serializable {
     private Long id; //编号
     private Long organizationId; //所属公司
     private String username; //用户名
@@ -24,7 +25,28 @@ public class User implements Serializable {
     private Boolean locked = Boolean.FALSE;
     private String credentialsSalt;
 
+    //查询条件（开始）
+    private String startTime;   //开始时间
+    private String endTime;     //结束时间
+    //查询条件（结束）
+
     public User() {
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public User(String username, String password) {

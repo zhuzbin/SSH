@@ -5,6 +5,7 @@ import com.zhuzb.repository.RoleDao;
 import com.zhuzb.service.ResourceService;
 import com.zhuzb.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -46,6 +47,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Cacheable(value = "roles")
     public List<Role> findAll() {
         return roleDao.findAll();
     }

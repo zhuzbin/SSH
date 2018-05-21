@@ -1,5 +1,6 @@
 package com.zhuzb.service;
 
+import com.zhuzb.entity.Country;
 import com.zhuzb.entity.User;
 
 import java.util.List;
@@ -54,5 +55,7 @@ public interface UserService {
      * @return
      */
     public Set<String> findPermissions(String username);
+
+    public List<User> getUserList(User user);
 
 }

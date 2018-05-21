@@ -8,12 +8,15 @@ import com.zhuzb.service.ResourceService;
 import com.zhuzb.service.RoleService;
 import com.zhuzb.shiro.SpringUtils;
 import com.zhuzb.util.StringUtil;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -56,6 +59,18 @@ public class Functions {
             return "";
         }
         return organization.getName();
+    }
+
+    public static JSONArray organizationAll(){
+        List<Organization> listAll = organizationService1.findAll();
+        JSONArray jsonArray = JSONArray.fromObject(listAll);
+        return jsonArray;
+    }
+
+    public static JSONArray roleAll(){
+        List<Role> listAll = roleService2.findAll();
+        JSONArray jsonArray = JSONArray.fromObject(listAll);
+        return jsonArray;
     }
 
     public static String organizationNames(String organizationIds) {

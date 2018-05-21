@@ -1,5 +1,6 @@
 package com.zhuzb.web.controller;
 
+import com.zhuzb.entity.Country;
 import com.zhuzb.entity.User;
 import com.zhuzb.service.OrganizationService;
 import com.zhuzb.service.RoleService;
@@ -11,7 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>User: Zhang Kaitao
@@ -33,8 +41,9 @@ public class UserController {
     @RequiresPermissions("user:view")
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
-        model.addAttribute("userList", userService.findAll());
-        return "user/list";
+        setCommonData(model);
+        //model.addAttribute("userList", userService.findAll());
+        return "user/userList";
     }
 
     @RequiresPermissions("user:create")
@@ -43,12 +52,13 @@ public class UserController {
         setCommonData(model);
         model.addAttribute("user", new User());
         model.addAttribute("op", "新增");
-        return "user/edit";
+        return "user/operationUser";
     }
 
     @RequiresPermissions("user:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(User user, RedirectAttributes redirectAttributes) {
+        user.setCreateTime(new Date());
         userService.createUser(user);
         redirectAttributes.addFlashAttribute("msg", "新增成功");
         return "redirect:/user";
@@ -108,5 +118,16 @@ public class UserController {
     private void setCommonData(Model model) {
         model.addAttribute("organizationList", organizationService.findAll());
         model.addAttribute("roleList", roleService.findAll());
+    }
+
+    @RequiresPermissions("user:view")
+    @RequestMapping(value = "/getUserList", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Object>getUserList(HttpServletRequest request,User user) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<User> a = userService.getUserList(user);
+        map.put("total", userService.findAll().size());
+        map.put("rows", a);
+        return map;
     }
 }

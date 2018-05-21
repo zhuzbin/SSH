@@ -1,5 +1,7 @@
 package com.zhuzb.common;
 
+import java.util.Date;
+
 /**
  * Desc：
  * User：ZhuZhiBin
@@ -12,8 +14,28 @@ public class BaseEntity {
 
     private int pageNumber;
 
+    private Date createTime;
+
+    private Date updateTime;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     public int getPageSize() {
         return pageSize;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public void setPageSize(int pageSize) {
@@ -27,4 +49,5 @@ public class BaseEntity {
     public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
     }
+
 }

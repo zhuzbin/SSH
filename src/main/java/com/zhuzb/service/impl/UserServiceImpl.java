@@ -1,5 +1,6 @@
 package com.zhuzb.service.impl;
 
+import com.zhuzb.entity.Country;
 import com.zhuzb.entity.User;
 import com.zhuzb.repository.UserDao;
 import com.zhuzb.service.RoleService;
@@ -107,4 +108,8 @@ public class UserServiceImpl implements UserService {
         return roleService.findPermissions(user.roleLists().toArray(new Long[0]));
     }
 
+    @Override
+    public List<User> getUserList(User user) {
+        return userDao.getUserList(user);
+    }
 }

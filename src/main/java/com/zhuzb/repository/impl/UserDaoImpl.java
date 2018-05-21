@@ -1,10 +1,7 @@
 package com.zhuzb.repository.impl;
 
-import com.zhuzb.entity.Resource;
 import com.zhuzb.entity.User;
-import com.zhuzb.repository.BaseDao;
 import com.zhuzb.repository.UserDao;
-import com.zhuzb.util.SessionConfig;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
@@ -56,5 +53,27 @@ public class UserDaoImpl  extends BaseDaoImpl<User> implements UserDao {
             return u;
         }
         return null;
+    }
+
+    @Override
+    public List<User> getUserList(User user) {
+        StringBuffer hql = new StringBuffer("from User where 1=1 ");
+        if(user.getUsername()!=null&&!"".equals(user.getUsername())){
+            hql.append(" AND username like '%"+user.getUsername()+"%'");
+        }
+        if(user.getRoleIds()!=null&&!"".equals(user.getRoleIds())){
+            hql.append(" AND role_ids like '%"+user.getRoleIds()+"%'");
+        }
+        if(user.getStartTime()!=null&&!"".equals(user.getStartTime())){
+            hql.append(" AND create_Time <= DATE_FORMAT('"+user.getStartTime()+"','%Y-%d-%m %H:%i:%s')");
+        }
+        if(user.getEndTime()!=null&&!"".equals(user.getEndTime())){
+            hql.append(" AND create_Time >= DATE_FORMAT('"+user.getEndTime()+"','%Y-%d-%m %H:%i:%s')");
+        }
+        Query query = super.getSession().createQuery(hql.toString());
+        query.setFirstResult(user.getPageSize()*(user.getPageNumber()-1));
+        query.setMaxResults(user.getPageSize());
+        List<User> list = query.list();
+        return list;
     }
 }
