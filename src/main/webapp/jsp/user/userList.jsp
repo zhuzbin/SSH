@@ -132,7 +132,7 @@
 <script>
     $(function(){
         $('#table').bootstrapTable({
-            url: '/user/getUserList',
+            url: '${pageContext.request.contextPath}/user/getUserList',
             dataType:"json",
             method:'get',
             striped:true, // 是否显示行间色

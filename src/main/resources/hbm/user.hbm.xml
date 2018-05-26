@@ -14,5 +14,6 @@
         <property name="roleIds" column="role_ids"></property>
         <property name="createTime" column="create_time"></property>
         <property name="updateTime" column="update_time"></property>
+        <property name="userImg" column="user_img"></property>
     </class>
 </hibernate-mapping>

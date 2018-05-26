@@ -130,4 +130,17 @@ public class UserController {
         map.put("rows", a);
         return map;
     }
+
+    @RequestMapping("/checkUserName")
+    @ResponseBody
+    public String checkUserName(HttpServletRequest request){
+        String username = request.getParameter("username");
+        if(username!=null&&!"".equals(username)){
+            User user = userService.findByUsername(username);
+            if(user!=null){
+                return "1";
+            }
+        }
+        return "0";
+    }
 }

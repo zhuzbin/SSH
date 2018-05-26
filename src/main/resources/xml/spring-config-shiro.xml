@@ -121,6 +121,7 @@
                 /favicon.ico = anon
                 /imageCode = anon
                 /static/** = anon
+                /uploadFile/** = anon
                 /login = authc
                 /logout = logout
                 /authenticated = authc

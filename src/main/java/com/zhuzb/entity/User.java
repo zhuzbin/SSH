@@ -20,6 +20,7 @@ public class User extends BaseEntity implements Serializable {
     private Long organizationId; //所属公司
     private String username; //用户名
     private String password; //密码
+    private String userImg;//用户头像
     private String salt; //加密密码的盐
     private String roleIds; //拥有的角色列表
     private Boolean locked = Boolean.FALSE;
@@ -52,6 +53,14 @@ public class User extends BaseEntity implements Serializable {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public String getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
     }
 
     public Long getId() {
