@@ -133,14 +133,14 @@ public class UserController {
 
     @RequestMapping("/checkUserName")
     @ResponseBody
-    public String checkUserName(HttpServletRequest request){
+    public boolean checkUserName(HttpServletRequest request){
         String username = request.getParameter("username");
         if(username!=null&&!"".equals(username)){
             User user = userService.findByUsername(username);
             if(user!=null){
-                return "1";
+                return false;
             }
         }
-        return "0";
+        return true;
     }
 }

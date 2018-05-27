@@ -45,36 +45,73 @@
             submitHandler: function() {
                 //验证用户名是否存在
                 //checkUserName();
+                $("#myForm").submit();
             }
         });
         $().ready(function() {
-            validator = $("#myForm").validate();
+            validator = $("#myForm").validate({
+                ignore:false,
+                rules:{
+                    username:{
+                        required:true,
+                        remote:{
+                            url:"${pageContext.request.contextPath}/user/checkUserName",
+                            type:"get",
+                            dataType:"json",
+                            data:{username:function () {
+                                return $("#username").val();
+                            }}
+                        }
+                    },
+                    password:{
+                        required:true
+                    },
+                    roleIds:{
+                        required:true
+                    },
+                    userImg:{
+                        required:true
+                    }
+                },
+                messages:{
+                    username:{
+                        required:"请输入用户名",
+                        remote:"用户名已存在，请重新输入"
+                    },
+                    password:{
+                        required:"请输入密码"
+                    },
+                    roleIds:{
+                        required:"请选择角色"
+                    },
+                    userImg:{
+                        required:"请上传用户头像"
+                    }
+                }
+            });
         });
 
         function checkUserName(){
             var flag = validator.element("#username");
-            console.log(flag);
-
+            //console.log(flag);
             //获取username
-/*            var username = $("#username").val();
-            var flag = validator.element("#username");;
-            console.log(flag);
-            if(flag){alert("执行逻辑");}*/
-
-/*            if(username != ""&&username!=null){
-                /!*            $.ajax({
-                                url:"${pageContext.request.contextPath}/user/checkUserName",
-                type:'get',
-                data:{"username":usernmae},
-                success:function (data) {
-                    //如果是1表示不存在
-                    if(data != 1){
-                        //触发validata提示错误
-
+            var username = $("#username").val();
+            if(flag){
+                $.ajax({
+                    url:"${pageContext.request.contextPath}/user/checkUserName",
+                    type:'get',
+                    data:{"username":username},
+                    success:function (data) {
+                        //如果是1表示存在
+                        if(data == 1){
+                            //触发validata提示错误
+                            console.log(data);
+                            $("#username-error").css("display","block");
+                            $("#username-error").html("该用户已存在！！！！");
+                        }
                     }
-                }
-            })*!/
-            }*/
+            });
+            }
         }
     </script>
 
@@ -90,14 +127,16 @@
                 <div class="ibox-content">
                     <form id="myForm" method="post" class="form-horizontal" action="${pageContext.request.contextPath}/user/create">
                         <!-- 开始：放入隐藏的input -->
+<%--
                         <input type="text" hidden="hidden" name="roleIds" id="roleIds" value="" />
+--%>
                         <!-- 结束：放入隐藏的input -->
 
                         <div class="form-group">
                             <label class="col-sm-1 control-label">用户名：</label>
 
                             <div class="col-sm-7">
-                                <input name="username" id="username" class="form-control" onblur="checkUserName()" required/>
+                                <input name="username" id="username" class="form-control"/>
                             </div>
                         </div>
 
@@ -107,7 +146,7 @@
                             <label class="col-sm-1 control-label">密码：</label>
 
                             <div class="col-sm-7">
-                                <input type="password" name="password" id="password" class="form-control" required/>
+                                <input type="password" name="password" id="password" class="form-control"/>
                             </div>
                         </div>
 
@@ -117,7 +156,7 @@
                             <label class="col-sm-1 control-label">角色：</label>
 
                             <div class="col-sm-7">
-                                <select class="form-control m-b" name = "roleIds" id="roleIds" multiple="" required>
+                                <select class="form-control m-b" name = "roleIds" id="roleIds" multiple="">
                                     <c:forEach var="obj" items="${roleList}">
                                         <option value="${obj.id}">${obj.role}</option>
                                     </c:forEach>
@@ -133,7 +172,7 @@
                             <div class="col-sm-7">
                                 <img alt="imgs" id="imgs" class="img-circle" src="" style="display: none;width: 100px;height: 100px;" />
                                 <span id="upload"></span>
-                                <input type="text" style='display:none;' name="userImg" id="userImg" value="" required/>
+                                <input type="text" style='display:none;' name="userImg" id="userImg" value=""/>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
