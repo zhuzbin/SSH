@@ -90,11 +90,8 @@
         <shiro:hasPermission name='user:update'>
             <button id="btn_update" type="button" class="btn btn-primary" onclick="update()">修改</button>
         </shiro:hasPermission>
-        <shiro:hasPermission name='user:update'>
-            <button id="btn_password" type="button" class="btn btn-primary" onclick="upPassword()">改密</button>
-        </shiro:hasPermission>
         <shiro:hasPermission name="user:delete">
-            <button id="btn_add" type="button" class="btn btn-primary" onclick="del()">批量删除</button>
+            <button id="btn_add" type="button" class="btn btn-primary" onclick="del()">删除</button>
         </shiro:hasPermission>
     </div>
 
@@ -143,7 +140,7 @@
             sidePagination: "server", // 请求资源
             queryParamsType : "",
             queryParams : getParams,
-            pageSize :3, // 每页显示条数
+            pageSize :10, // 每页显示条数
             pageNumber:1,//显示页数
             pageList:[1,5,10,50],
             paginationPreText:'上一页',
@@ -192,7 +189,13 @@
 
     //跳转到修改页面
     function update(){
-
+        var obj = $("#table").bootstrapTable('getSelections');
+        if(obj.length>1){
+            alert("只能修改一个用户");
+            return;
+        }
+        var id = obj[0].id;
+        window.location.href = "${pageContext.request.contextPath}/user/"+id+"/update";
     }
 
     //删除数据
@@ -207,10 +210,19 @@
         if(ids.length>0){
             ids = ids.substring(0,ids.length-1);
         }
-/*        $.ajax({
-           url:'',
-
-        });*/
+        $.ajax({
+            url:"${pageContext.request.contextPath}/user/delUserList",
+            type:'get',
+            data:{"ids":ids},
+            success:function (data) {
+                //如果是1表示存在
+                if(data ){
+                    alert("删除成功");
+                    //刷新列表
+                    sub();
+                }
+            }
+        });
     }
 
     //翻译组织名称

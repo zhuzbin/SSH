@@ -5,6 +5,7 @@ import com.zhuzb.entity.User;
 import com.zhuzb.service.OrganizationService;
 import com.zhuzb.service.RoleService;
 import com.zhuzb.service.UserService;
+import com.zhuzb.util.StringUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,7 +71,7 @@ public class UserController {
         setCommonData(model);
         model.addAttribute("user", userService.findOne(id));
         model.addAttribute("op", "修改");
-        return "user/edit";
+        return "user/operationUser";
     }
 
     @RequiresPermissions("user:update")
@@ -139,6 +140,18 @@ public class UserController {
             User user = userService.findByUsername(username);
             if(user!=null){
                 return false;
+            }
+        }
+        return true;
+    }
+
+    @RequestMapping("/delUserList")
+    @ResponseBody
+    public boolean delUserList(HttpServletRequest request){
+        String ids[] = request.getParameter("ids").split(",");
+        for(int i=0;i<ids.length;i++){
+            if(StringUtil.str(ids[i])){
+                userService.deleteUser(Long.valueOf(ids[i]));
             }
         }
         return true;

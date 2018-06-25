@@ -49,6 +49,14 @@
             }
         });
         $().ready(function() {
+            //如果修改初始化select
+            var roles = ${user.roleIds}.split(",");
+            $(roles).each(function (index,Obj) {
+                if(Obj !=null&&Obj != ""){
+                    $("#roleIds").find("option[value='"+Obj+"']").attr("selected",true)
+                }
+            });
+
             validator = $("#myForm").validate({
                 ignore:false,
                 rules:{
@@ -61,31 +69,39 @@
                             data:{username:function () {
                                 return $("#username").val();
                             }}
-                        }
+                        },
+                        rangelength:[6,12]
                     },
                     password:{
-                        required:true
+                        required:true,
+                        rangelength:[6,12]
+                    },
+                    confirmPassword:{
+                        required:true,
+                        equalTo:'#password',
+                        rangelength:[6,12]
                     },
                     roleIds:{
-                        required:true
-                    },
-                    userImg:{
                         required:true
                     }
                 },
                 messages:{
                     username:{
                         required:"请输入用户名",
-                        remote:"用户名已存在，请重新输入"
+                        remote:"用户名已存在，请重新输入",
+                        rangelength:"长度6-12位"
                     },
                     password:{
-                        required:"请输入密码"
+                        required:"请输入密码",
+                        rangelength:"长度6-12位"
+                    },
+                    confirmPassword:{
+                        required:"请输入确认密码",
+                        equalTo:'确认密码和密码不一致',
+                        rangelength:"长度6-12位"
                     },
                     roleIds:{
                         required:"请选择角色"
-                    },
-                    userImg:{
-                        required:"请上传用户头像"
                     }
                 }
             });
@@ -110,7 +126,7 @@
                             $("#username-error").html("该用户已存在！！！！");
                         }
                     }
-            });
+                });
             }
         }
     </script>
@@ -127,33 +143,44 @@
                 <div class="ibox-content">
                     <form id="myForm" method="post" class="form-horizontal" action="${pageContext.request.contextPath}/user/create">
                         <!-- 开始：放入隐藏的input -->
-<%--
-                        <input type="text" hidden="hidden" name="roleIds" id="roleIds" value="" />
---%>
+
+                        <input type="text" hidden="hidden" name="id" id="id" value="${user.id}" />
+
                         <!-- 结束：放入隐藏的input -->
 
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">用户名：</label>
+                            <label class="col-sm-2 control-label">用户名：</label>
 
                             <div class="col-sm-7">
-                                <input name="username" id="username" class="form-control"/>
+                                <input name="username" id="username" class="form-control" value="${user.username}"/>
                             </div>
                         </div>
 
                         <div class="hr-line-dashed"></div>
 
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">密码：</label>
+                        <c:if test="${op == '修改'}">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">密码：</label>
 
-                            <div class="col-sm-7">
-                                <input type="password" name="password" id="password" class="form-control"/>
+                                <div class="col-sm-7">
+                                    <input type="password" name="password" id="password" class="form-control"/>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="hr-line-dashed"></div>
+                            <div class="hr-line-dashed"></div>
 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">确认密码：</label>
+
+                                <div class="col-sm-7">
+                                    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control"/>
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                        </c:if>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">角色：</label>
+                            <label class="col-sm-2 control-label">角色：</label>
 
                             <div class="col-sm-7">
                                 <select class="form-control m-b" name = "roleIds" id="roleIds" multiple="">
@@ -167,10 +194,15 @@
                         <div class="hr-line-dashed"></div>
 
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">头像：</label>
+                            <label class="col-sm-2 control-label">头像：</label>
 
                             <div class="col-sm-7">
-                                <img alt="imgs" id="imgs" class="img-circle" src="" style="display: none;width: 100px;height: 100px;" />
+                                <c:if test="${empty user.userImg}">
+                                    <img alt="imgs" id="imgs" class="img-circle" src="http://localhost:8080/uploadsImg/${user.userImg}" style="display: none;width: 100px;height: 100px;" />
+                                </c:if>
+                                <c:if test="${not empty user.userImg}">
+                                    <img alt="imgs" id="imgs" class="img-circle" src="" style="display: none;width: 100px;height: 100px;" />
+                                </c:if>
                                 <span id="upload"></span>
                                 <input type="text" style='display:none;' name="userImg" id="userImg" value=""/>
                             </div>
@@ -180,7 +212,7 @@
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
                                 <input class="btn btn-primary" type="submit" value="提交" />
-                                <a class="btn btn-primary" href="javascript:subBtn();">提交</a>
+                                <%--<a class="btn btn-primary" href="javascript:subBtn();">提交</a>--%>
                                 <a class="btn btn-default" href="javascript:retBtn();">返回</a>
                             </div>
                         </div>

@@ -30,7 +30,7 @@
             id: 'id',
             parentColumn: 'parentId',
             type: "GET", //请求数据的ajax类型
-            url: '/resource/resourceList',   //请求数据的ajax的url
+            url: '${pageContext.request.contextPath}/resource/resourceList',   //请求数据的ajax的url
             ajaxParams: {}, //请求数据的ajax的data属性
             expandColumn: 'name',//在哪一列上面显示展开按钮
             striped: true,   //是否各行渐变色

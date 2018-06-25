@@ -35,7 +35,11 @@ public class UserServiceImpl implements UserService {
     public void createUser(User user) {
         //加密密码
         passwordHelper.encryptPassword(user);
-        userDao.createUser(user);
+        if(StringUtil.str(user.getId().toString())){
+            userDao.updateUser(user);
+        }else{
+            userDao.createUser(user);
+        }
     }
 
     @Override
@@ -63,7 +67,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findOne(Long userId) {
-        return userDao.findOne(userId);
+        User u = userDao.findOne(userId);
+        //md5解密
+        return u;
     }
 
     @Override

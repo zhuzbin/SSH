@@ -177,9 +177,10 @@ $(function () {
     });
 
     $('#treeview7').treeview({
-        color: "#428bca",
-        showBorder: false,
-        data: defaultData
+        data: defaultData,
+        showCheckbox:true,
+        onNodeChecked:nodeChecked ,
+        onNodeUnchecked:nodeUnchecked
     });
 
     $('#treeview8').treeview({
